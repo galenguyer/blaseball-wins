@@ -12,3 +12,20 @@ body {
 .App h1 {
     margin: 1rem;
 }
+
+.Graph {
+    width: 60%;
+    height: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media only screen and (max-width: 1000px) {
+    .Graph {
+        width: 100%;
+    }
+
+    .Graph-Label {
+        font-size: 75%;
+    }
+}

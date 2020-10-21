@@ -14,15 +14,15 @@ import {
 
 const Graph = (props) => {
     return (
-        <div style={{ width: "60%", height: 400, marginLeft: "auto", marginRight: "auto" }}>
+        <div className="Graph">
             <ResponsiveContainer>
                 <BarChart
                     height={300}
                     data={props.data}
                     margin={{
                         top: 5,
-                        right: 30,
-                        left: 20,
+                        right: 10,
+                        left: 0,
                         bottom: 5,
                     }}
                 >
@@ -44,7 +44,7 @@ class CustomizedAxisTick extends PureComponent {
 
         return (
             <g transform={`translate(${x},${y})`}>
-                <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">
+                <text className="Graph-Label" x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-40)">
                     {payload.value}
                 </text>
             </g>
