@@ -13,24 +13,30 @@ function App() {
     if (!result) return <h1>Loading...</h1>;
 
     const day = result.value.games.sim.day;
+    var teams = [];
+    result.value.games.schedule.map((game) => {
+        teams.push({
+            id: game.awayTeam,
+            name: game.awayTeamNickname,
+            wins: result.value.games.standings.wins[game.awayTeam],
+            realWins: day - result.value.games.standings.losses[game.awayTeam],
+        });
+        teams.push({
+            id: game.homeTeam,
+            name: game.homeTeamNickname,
+            wins: result.value.games.standings.wins[game.homeTeam],
+            realWins: day - result.value.games.standings.losses[game.homeTeam],
+        });
+    });
+
+    teams.sort(function (a, b) {
+        return b.wins - b.realWins - (a.wins - a.realWins);
+    });
 
     return (
         <div className="App">
-            {result.value.games.schedule.map((game) => (
-                <>
-                    <Team
-                        name={game.awayTeamNickname}
-                        id={game.awayTeam}
-                        standings={result.value.games.standings}
-                        day={day}
-                    />
-                    <Team
-                        name={game.homeTeamNickname}
-                        id={game.homeTeam}
-                        standings={result.value.games.standings}
-                        day={day}
-                    />
-                </>
+            {teams.map((team) => (
+                <Team name={team.name} wins={team.wins} realWins={team.realWins} />
             ))}
         </div>
     );

@@ -1,11 +1,10 @@
 import React from "react";
 
 const Team = (props) => {
-    const realWins = props.day - props.standings.losses[props.id];
-    const wins = props.standings.wins[props.id];
     return (
-        <div class="Team">
-            {props.name} - {wins}:{realWins}
+        <div className="Team">
+            {props.name} - {props.wins}:{props.realWins} (ratio {Math.floor((props.wins * 100) / props.realWins) / 100},
+            diff {props.wins - props.realWins})
         </div>
     );
 };
