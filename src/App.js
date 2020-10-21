@@ -10,8 +10,20 @@ const url = "https://blase.nyaa.gay/api/v1/latest/streamData";
 function App() {
     const { data: result, error } = useSWR(url);
 
-    if (error) return <h1>An error occurred</h1>;
-    if (!result) return <h1>Loading...</h1>;
+    if (error)
+        return (
+            <div className="App">
+                <h1>Wins per Win</h1>
+                <h1>An error occurred</h1>
+            </div>
+        );
+    if (!result)
+        return (
+            <div className="App">
+                <h1>Wins per Win</h1>
+                <h1>Loading latest data...</h1>
+            </div>
+        );
 
     const day = result.value.games.sim.day;
     var teams = [];
