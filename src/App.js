@@ -31,19 +31,21 @@ function App() {
         teams.push({
             id: game.awayTeam,
             name: game.awayTeamNickname,
+            fullName: game.awayTeamName,
             wins: result.value.games.standings.wins[game.awayTeam],
             realWins: day - result.value.games.standings.losses[game.awayTeam],
         });
         teams.push({
             id: game.homeTeam,
             name: game.homeTeamNickname,
+            fullName: game.homeTeamName,
             wins: result.value.games.standings.wins[game.homeTeam],
             realWins: day - result.value.games.standings.losses[game.homeTeam],
         });
     });
 
     teams.sort(function (a, b) {
-        return b.wins - b.realWins - (a.wins - a.realWins);
+        return (Math.floor((b.wins * 100) / b.realWins) / 100) - (Math.floor((a.wins * 100) / a.realWins) / 100)
     });
 
     const data = teams.map((team) => {
@@ -61,7 +63,7 @@ function App() {
             <div className="Team">Format: [Team Name] - [Wins]:[Real Wins]</div>
             <br />
             {teams.map((team) => (
-                <Team name={team.name} wins={team.wins} realWins={team.realWins} />
+                <Team name={team.fullName} wins={team.wins} realWins={team.realWins} />
             ))}
             <br />
         </div>
