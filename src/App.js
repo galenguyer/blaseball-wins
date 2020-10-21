@@ -25,7 +25,7 @@ function App() {
             </div>
         );
 
-    const day = result.value.games.sim.day;
+    const day = result.value.games.sim.day + 1;
     var teams = [];
     result.value.games.schedule.map((game) => {
         teams.push({
