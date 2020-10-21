@@ -3,6 +3,7 @@ import useSWR from "swr";
 import logo from "./logo.svg";
 import Team from "./Team";
 import "./App.css";
+import Graph from "./Graph";
 
 const url = "https://blase.nyaa.gay/api/v1/latest/streamData";
 
@@ -33,11 +34,24 @@ function App() {
         return b.wins - b.realWins - (a.wins - a.realWins);
     });
 
+    const data = teams.map((team) => {
+        return {
+            name: team.name,
+            ratio: Math.floor((team.wins * 100) / team.realWins) / 100,
+        };
+    });
+
     return (
         <div className="App">
+            <h1>Wins per Win</h1>
+            <Graph data={data} />
+            <br />
+            <div className="Team">Format: [Team Name] - [Wins]:[Real Wins]</div>
+            <br />
             {teams.map((team) => (
                 <Team name={team.name} wins={team.wins} realWins={team.realWins} />
             ))}
+            <br />
         </div>
     );
 }
