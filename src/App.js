@@ -45,7 +45,7 @@ function App() {
     });
 
     teams.sort(function (a, b) {
-        return (Math.floor((b.wins * 100) / b.realWins) / 100) - (Math.floor((a.wins * 100) / a.realWins) / 100)
+        return b.wins / b.realWins - a.wins / a.realWins;
     });
 
     const data = teams.map((team) => {
