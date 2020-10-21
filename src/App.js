@@ -66,6 +66,10 @@ function App() {
                 <Team name={team.fullName} wins={team.wins} realWins={team.realWins} />
             ))}
             <br />
+            <div className="Comment" style={{ marginBottom: "1rem" }}>
+                Created by MasterChief_John-117#1911 &nbsp;|&nbsp; Source available on{" "}
+                <a href="https://github.com/galenguyer/blaseball-wins">github!</a>
+            </div>
         </div>
     );
 }

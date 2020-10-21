@@ -29,3 +29,13 @@ body {
         font-size: 75%;
     }
 }
+
+.Comment {
+    font-style: italic;
+    color: #bebebe;
+}
+
+.Comment a {
+    color: #8d8c8c;
+    text-decoration: none;
+}
