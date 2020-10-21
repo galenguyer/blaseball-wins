@@ -1,5 +1,16 @@
 import React, { PureComponent } from "react";
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import {
+    BarChart,
+    Bar,
+    Cell,
+    ReferenceLine,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer,
+} from "recharts";
 
 const Graph = (props) => {
     return (
@@ -18,6 +29,7 @@ const Graph = (props) => {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" interval={0} tick={<CustomizedAxisTick />} height={90} />
                     <YAxis />
+                    <ReferenceLine y={1} stroke="red" />
                     <Tooltip />
                     <Bar dataKey="ratio" fill="#8884d8" />
                 </BarChart>
