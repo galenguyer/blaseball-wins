@@ -57,7 +57,7 @@ function App() {
 
     return (
         <div className="App">
-            <h1>Wins per Win</h1>
+            <h1>Wins per Win (Day {day})</h1>
             <Graph data={data} />
             <br />
             <div className="Team">Format: [Team Name] - [Wins]:[Real Wins]</div>
