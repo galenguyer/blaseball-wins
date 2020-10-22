@@ -8,15 +8,18 @@ const url = "https://blase.nyaa.gay/api/v1/latest/streamData";
 
 function App() {
     const { data: latestStreamData, error: sdError } = useSWR(url);
+    const { data: gameData, error: gError } = useSWR(
+        () => "https://api.sibr.dev/chronicler/v1/games?season=" + latestStreamData.value.games.sim.season
+    );
 
-    if (sdError)
+    if (sdError || gError)
         return (
             <div className="App">
                 <h1>Wins per Win</h1>
                 <h1>An error occurred</h1>
             </div>
         );
-    if (!latestStreamData)
+    if (!latestStreamData || !gameData)
         return (
             <div className="App">
                 <h1>Wins per Win</h1>
@@ -24,6 +27,9 @@ function App() {
             </div>
         );
     const day = latestStreamData.value.games.sim.day;
+    const season = latestStreamData.value.games.sim.season;
+
+    return <div>gamedata got: {gameData.data.length}</div>;
 
     var teams = [];
     // eslint-disable-next-line
