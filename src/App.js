@@ -32,15 +32,17 @@ function App() {
             id: game.awayTeam,
             name: game.awayTeamNickname,
             fullName: game.awayTeamName,
+            effectiveDay: game.gameComplete ? day : day - 1,
             wins: result.value.games.standings.wins[game.awayTeam],
-            realWins: day - result.value.games.standings.losses[game.awayTeam],
+            realWins: (game.gameComplete ? day : day - 1) - result.value.games.standings.losses[game.awayTeam],
         });
         teams.push({
             id: game.homeTeam,
             name: game.homeTeamNickname,
             fullName: game.homeTeamName,
+            effectiveDay: game.gameComplete ? day : day - 1,
             wins: result.value.games.standings.wins[game.homeTeam],
-            realWins: day - result.value.games.standings.losses[game.homeTeam],
+            realWins: (game.gameComplete ? day : day - 1) - result.value.games.standings.losses[game.homeTeam],
         });
     });
 
