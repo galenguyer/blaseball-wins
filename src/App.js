@@ -7,42 +7,42 @@ import Graph from "./Graph";
 const url = "https://blase.nyaa.gay/api/v1/latest/streamData";
 
 function App() {
-    const { data: result, error } = useSWR(url);
+    const { data: latestStreamData, error: sdError } = useSWR(url);
 
-    if (error)
+    if (sdError)
         return (
             <div className="App">
                 <h1>Wins per Win</h1>
                 <h1>An error occurred</h1>
             </div>
         );
-    if (!result)
+    if (!latestStreamData)
         return (
             <div className="App">
                 <h1>Wins per Win</h1>
                 <h1>Loading latest data...</h1>
             </div>
         );
+    const day = latestStreamData.value.games.sim.day;
 
-    const day = result.value.games.sim.day + 1;
     var teams = [];
     // eslint-disable-next-line
-    result.value.games.schedule.map((game) => {
+    latestStreamData.value.games.schedule.map((game) => {
         teams.push({
             id: game.awayTeam,
             name: game.awayTeamNickname,
             fullName: game.awayTeamName,
-            effectiveDay: game.gameComplete ? day : day - 1,
-            wins: result.value.games.standings.wins[game.awayTeam],
-            realWins: (game.gameComplete ? day : day - 1) - result.value.games.standings.losses[game.awayTeam],
+            effectiveDay: game.gameComplete ? day + 1 : day,
+            wins: latestStreamData.value.games.standings.wins[game.awayTeam],
         });
         teams.push({
             id: game.homeTeam,
             name: game.homeTeamNickname,
             fullName: game.homeTeamName,
-            effectiveDay: game.gameComplete ? day : day - 1,
-            wins: result.value.games.standings.wins[game.homeTeam],
-            realWins: (game.gameComplete ? day : day - 1) - result.value.games.standings.losses[game.homeTeam],
+            effectiveDay: game.gameComplete ? day + 1 : day,
+            wins: latestStreamData.value.games.standings.wins[game.homeTeam],
+            realWins:
+                (game.gameComplete ? day + 1 : day) - latestStreamData.value.games.standings.losses[game.awayTeam],
         });
     });
 
