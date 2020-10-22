@@ -48,8 +48,10 @@ function App() {
                 effectiveDay: 0,
                 realWins: 0,
                 realLosses: 0,
-                winsWhenWon: 0,
-                winsWhenLoss: 0,
+                netWinsWhenWon: 0,
+                netWinsWhenLoss: 0,
+                grossWinsWhenWon: 0,
+                grossWinsWhenLoss: 0,
             };
         }
         // add the Home team to the Teams list if not already there
@@ -62,8 +64,10 @@ function App() {
                 effectiveDay: 0,
                 realWins: 0,
                 realLosses: 0,
-                winsWhenWon: 0,
-                winsWhenLoss: 0,
+                netWinsWhenWon: 0,
+                netWinsWhenLoss: 0,
+                grossWinsWhenWon: 0,
+                grossWinsWhenLoss: 0,
             };
         }
 
@@ -77,16 +81,28 @@ function App() {
                 // Sun 2 acted on Away team
                 if (outcome.endsWith(game.awayTeamNickname)) {
                     // Away team Won game
-                    if (game.awayScore > game.homeScore) teams[game.awayTeam].winsWhenWon++;
+                    if (game.awayScore > game.homeScore) {
+                        teams[game.awayTeam].netWinsWhenWon++;
+                        teams[game.awayTeam].grossWinsWhenWon++;
+                    }
                     // Away team Lost game
-                    else teams[game.awayTeam].winsWhenLoss++;
+                    else {
+                        teams[game.awayTeam].netWinsWhenLoss++;
+                        teams[game.awayTeam].grossWinsWhenLoss++;
+                    }
                 }
                 // Sun 2 acted on the Home team
                 else {
                     // Away team Won game
-                    if (game.awayScore > game.homeScore) teams[game.homeTeam].winsWhenLoss++;
+                    if (game.awayScore > game.homeScore) {
+                        teams[game.homeTeam].netWinsWhenLoss++;
+                        teams[game.homeTeam].grossWinsWhenLoss++;
+                    }
                     // Away team Lost game
-                    else teams[game.homeTeam].winsWhenWon++;
+                    else {
+                        teams[game.homeTeam].netWinsWhenWon++;
+                        teams[game.homeTeam].grossWinsWhenWon++;
+                    }
                 }
             }
             // Black Hole active
@@ -94,83 +110,132 @@ function App() {
                 // Black Hole acted on Away team
                 if (outcome.endsWith(game.awayTeamNickname + "!")) {
                     // Away team Won game
-                    if (game.awayScore > game.homeScore) teams[game.awayTeam].winsWhenWon--;
+                    if (game.awayScore > game.homeScore) teams[game.awayTeam].netWinsWhenWon--;
                     // Away team Lost game
-                    else teams[game.awayTeam].winsWhenLoss--;
+                    else teams[game.awayTeam].netWinsWhenLoss--;
                 }
                 // Black Hole acted on the Home team
                 else {
                     // Away team Won game
-                    if (game.awayScore > game.homeScore) teams[game.homeTeam].winsWhenLoss--;
+                    if (game.awayScore > game.homeScore) teams[game.homeTeam].netWinsWhenLoss--;
                     // Away team Lost game
-                    else teams[game.homeTeam].winsWhenWon--;
+                    else teams[game.homeTeam].netWinsWhenWon--;
                 }
             }
         });
 
         if (game.awayScore > game.homeScore) {
             teams[game.awayTeam].realWins++;
-            teams[game.awayTeam].winsWhenWon++;
+            teams[game.awayTeam].netWinsWhenWon++;
+            teams[game.awayTeam].grossWinsWhenWon++;
             teams[game.homeTeam].realLosses++;
         } else {
             teams[game.awayTeam].realLosses++;
             teams[game.homeTeam].realWins++;
-            teams[game.homeTeam].winsWhenWon++;
+            teams[game.homeTeam].netWinsWhenWon++;
+            teams[game.homeTeam].grossWinsWhenWon++;
         }
     });
 
     // change teams into an array for sorting
-    let winsPerWins = [];
-    let winsPerLoss = [];
+    let netWinsPerWins = [];
+    let grossWinsPerWins = [];
+    let netWinsPerLoss = [];
+    let grossWinsPerLoss = [];
     teamIdList.forEach((id) => {
-        winsPerWins.push(teams[id]);
-        winsPerLoss.push(teams[id]);
+        netWinsPerWins.push(teams[id]);
+        grossWinsPerWins.push(teams[id]);
+        netWinsPerLoss.push(teams[id]);
+        grossWinsPerLoss.push(teams[id]);
     });
 
-    winsPerWins.sort(function (a, b) {
-        return b.winsWhenWon / b.realWins - a.winsWhenWon / a.realWins;
+    netWinsPerWins.sort(function (a, b) {
+        return b.netWinsWhenWon / b.realWins - a.netWinsWhenWon / a.realWins;
     });
-    winsPerLoss.sort(function (a, b) {
-        return b.winsWhenLoss / b.realLosses - a.winsWhenLoss / a.realLosses;
+    grossWinsPerWins.sort(function (a, b) {
+        return b.grossWinsWhenWon / b.realWins - a.grossWinsWhenWon / a.realWins;
+    });
+    netWinsPerLoss.sort(function (a, b) {
+        return b.netWinsWhenLoss / b.realLosses - a.netWinsWhenLoss / a.realLosses;
+    });
+    grossWinsPerLoss.sort(function (a, b) {
+        return b.grossWinsWhenLoss / b.realLosses - a.grossWinsWhenLoss / a.realLosses;
     });
 
-    console.log(winsPerWins);
-
-    const winsPerWinGraphData = winsPerWins.map((team) => {
+    const netWinsPerWinGraphData = netWinsPerWins.map((team) => {
         return {
             name: team.name,
-            ratio: Math.floor((team.winsWhenWon * 100) / team.realWins) / 100,
+            ratio: Math.floor((team.netWinsWhenWon * 100) / team.realWins) / 100,
         };
     });
-    const winsPerLossGraphData = winsPerLoss.map((team) => {
+    const grossWinsPerWinGraphData = grossWinsPerWins.map((team) => {
         return {
             name: team.name,
-            ratio: Math.floor((team.winsWhenLoss * 100) / team.realLosses) / 100,
+            ratio: Math.floor((team.grossWinsWhenWon * 100) / team.realWins) / 100,
         };
     });
+    const netWinsPerLossGraphData = netWinsPerLoss.map((team) => {
+        return {
+            name: team.name,
+            ratio: Math.floor((team.netWinsWhenLoss * 100) / team.realLosses) / 100,
+        };
+    });
+    const grossWinsPerLossGraphData = grossWinsPerLoss.map((team) => {
+        return {
+            name: team.name,
+            ratio: Math.floor((team.grossWinsWhenLoss * 100) / team.realLosses) / 100,
+        };
+    });
+
     return (
         <div className="App">
             <h1>Net Wins per Win (Day {day + 1})</h1>
             <p className="Comment">
-                Shows how many Wins each team has recieved per game they won after removing wins lost during a win
+                Shows how many Wins each team has recieved per game they won after removing wins taken by the Black Hole
             </p>
-            <Graph data={winsPerWinGraphData} />
+            <Graph data={netWinsPerWinGraphData} />
             <br />
             <div className="Team">Format: [Team Name] - [Wins]:[Real Wins]</div>
             <br />
-            {winsPerWins.map((team) => (
-                <Team name={team.fullName} wins={team.winsWhenWon} realWins={team.realWins} />
+            {netWinsPerWins.map((team) => (
+                <Team name={team.fullName} wins={team.netWinsWhenWon} realWins={team.realWins} />
+            ))}
+            <br />
+            <h1>Gross Wins per Win (Day {day + 1})</h1>
+            <p className="Comment">
+                Shows how many Wins each team has recieved per game they won without removing wins taken by the Black
+                Hole
+            </p>
+            <Graph data={grossWinsPerWinGraphData} />
+            <br />
+            <div className="Team">Format: [Team Name] - [Wins]:[Real Wins]</div>
+            <br />
+            {grossWinsPerWins.map((team) => (
+                <Team name={team.fullName} wins={team.grossWinsWhenWon} realWins={team.realWins} />
             ))}
             <br />
             <h1>Net Wins Per Loss (Day {day + 1})</h1>
             <p className="Comment">
-                Shows how many Wins each team has recieved per game they lost after removing wins lost during a loss
+                Shows how many Wins each team has recieved per game they lost after removing wins taken by the Black
+                Hole
             </p>
-            <Graph data={winsPerLossGraphData} />
+            <Graph data={netWinsPerLossGraphData} />
             <div className="Team">Format: [Team Name] - [Wins]:[Real Loss]</div>
             <br />
-            {winsPerLoss.map((team) => (
-                <Team name={team.fullName} wins={team.winsWhenLoss} realWins={team.realLosses} />
+            {netWinsPerLoss.map((team) => (
+                <Team name={team.fullName} wins={team.netWinsWhenLoss} realWins={team.realLosses} />
+            ))}
+            <br />
+            <h1>Gross Wins Per Loss (Day {day + 1})</h1>
+            <p className="Comment">
+                Shows how many Wins each team has recieved per game they lost without removing wins taken by the Black
+                Hole
+            </p>
+            <Graph data={grossWinsPerLossGraphData} />
+            <div className="Team">Format: [Team Name] - [Wins]:[Real Loss]</div>
+            <br />
+            {netWinsPerLoss.map((team) => (
+                <Team name={team.fullName} wins={team.grossWinsWhenLoss} realWins={team.realLosses} />
             ))}
             <br />
             <div className="Comment" style={{ marginBottom: "1rem" }}>
