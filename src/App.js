@@ -111,43 +111,62 @@ function App() {
         if (game.awayScore > game.homeScore) {
             teams[game.awayTeam].realWins++;
             teams[game.awayTeam].winsWhenWon++;
-            teams[game.awayTeam].netWins++;
             teams[game.homeTeam].realLosses++;
         } else {
             teams[game.awayTeam].realLosses++;
             teams[game.homeTeam].realWins++;
             teams[game.homeTeam].winsWhenWon++;
-            teams[game.homeTeam].netWins++;
         }
     });
 
-    let teamList = [];
+    // change teams into an array for sorting
+    let winsPerWins = [];
+    let winsPerLoss = [];
     teamIdList.forEach((id) => {
-        teamList.push(teams[id]);
+        winsPerWins.push(teams[id]);
+        winsPerLoss.push(teams[id]);
     });
 
-    teamList.sort(function (a, b) {
-        return (b.winsWhenLoss + b.winsWhenWon) / b.realWins - (a.winsWhenLoss + a.winsWhenWon) / a.realWins;
+    winsPerWins.sort(function (a, b) {
+        return b.winsWhenWon / b.realWins - a.winsWhenWon / a.realWins;
+    });
+    winsPerLoss.sort(function (a, b) {
+        return b.winsWhenLoss / b.realLosses - a.winsWhenLoss / a.realLosses;
     });
 
-    console.log(teamList);
+    console.log(winsPerWins);
 
-    const data = teamList.map((team) => {
+    const winsPerWinGraphData = winsPerWins.map((team) => {
         return {
             name: team.name,
-            ratio: Math.floor(((team.winsWhenLoss + team.winsWhenWon) * 100) / team.realWins) / 100,
+            ratio: Math.floor((team.winsWhenWon * 100) / team.realWins) / 100,
         };
     });
-
+    const winsPerLossGraphData = winsPerLoss.map((team) => {
+        return {
+            name: team.name,
+            ratio: Math.floor((team.winsWhenLoss * 100) / team.realLosses) / 100,
+        };
+    });
     return (
         <div className="App">
-            <h1>Wins per Win (Day {day})</h1>
-            <Graph data={data} />
+            <h1>Wins per Win (Day {day + 1})</h1>
+            <p className="Comment">Shows how many Wins each team has recieved per game they won</p>
+            <Graph data={winsPerWinGraphData} />
             <br />
             <div className="Team">Format: [Team Name] - [Wins]:[Real Wins]</div>
             <br />
-            {teamList.map((team) => (
-                <Team name={team.fullName} wins={team.winsWhenLoss + team.winsWhenWon} realWins={team.realWins} />
+            {winsPerWins.map((team) => (
+                <Team name={team.fullName} wins={team.winsWhenWon} realWins={team.realWins} />
+            ))}
+            <br />
+            <h1>Wins Per Loss (Day {day + 1})</h1>
+            <p className="Comment">Shows how many Wins each team has recieved per game they lost</p>
+            <Graph data={winsPerLossGraphData} />
+            <div className="Team">Format: [Team Name] - [Wins]:[Real Loss]</div>
+            <br />
+            {winsPerLoss.map((team) => (
+                <Team name={team.fullName} wins={team.winsWhenLoss} realWins={team.realLosses} />
             ))}
             <br />
             <div className="Comment" style={{ marginBottom: "1rem" }}>
