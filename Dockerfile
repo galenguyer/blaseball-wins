@@ -10,5 +10,4 @@ FROM docker.galenguyer.com/nginx-auto/nginx-react
 COPY --from=build-deps /usr/src/app/build /var/www/html/wins
 COPY nginx.conf /etc/nginx/nginx.conf
 RUN echo 'ok' > /var/www/html/index.html
-EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
