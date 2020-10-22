@@ -1,16 +1,5 @@
 import React, { PureComponent } from "react";
-import {
-    BarChart,
-    Bar,
-    Cell,
-    ReferenceLine,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    Legend,
-    ResponsiveContainer,
-} from "recharts";
+import { BarChart, Bar, ReferenceLine, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 const Graph = (props) => {
     return (
@@ -40,7 +29,7 @@ const Graph = (props) => {
 
 class CustomizedAxisTick extends PureComponent {
     render() {
-        const { x, y, stroke, payload } = this.props;
+        const { x, y, payload } = this.props;
 
         return (
             <g transform={`translate(${x},${y})`}>

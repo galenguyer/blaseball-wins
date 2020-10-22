@@ -1,6 +1,5 @@
 import React from "react";
 import useSWR from "swr";
-import logo from "./logo.svg";
 import Team from "./Team";
 import "./App.css";
 import Graph from "./Graph";
@@ -27,6 +26,7 @@ function App() {
 
     const day = result.value.games.sim.day + 1;
     var teams = [];
+    // eslint-disable-next-line
     result.value.games.schedule.map((game) => {
         teams.push({
             id: game.awayTeam,
