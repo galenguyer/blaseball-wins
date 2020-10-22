@@ -150,8 +150,10 @@ function App() {
     });
     return (
         <div className="App">
-            <h1>Wins per Win (Day {day + 1})</h1>
-            <p className="Comment">Shows how many Wins each team has recieved per game they won</p>
+            <h1>Net Wins per Win (Day {day + 1})</h1>
+            <p className="Comment">
+                Shows how many Wins each team has recieved per game they won after removing wins lost during a win
+            </p>
             <Graph data={winsPerWinGraphData} />
             <br />
             <div className="Team">Format: [Team Name] - [Wins]:[Real Wins]</div>
@@ -160,8 +162,10 @@ function App() {
                 <Team name={team.fullName} wins={team.winsWhenWon} realWins={team.realWins} />
             ))}
             <br />
-            <h1>Wins Per Loss (Day {day + 1})</h1>
-            <p className="Comment">Shows how many Wins each team has recieved per game they lost</p>
+            <h1>Net Wins Per Loss (Day {day + 1})</h1>
+            <p className="Comment">
+                Shows how many Wins each team has recieved per game they lost after removing wins lost during a loss
+            </p>
             <Graph data={winsPerLossGraphData} />
             <div className="Team">Format: [Team Name] - [Wins]:[Real Loss]</div>
             <br />
