@@ -77,7 +77,7 @@ function App() {
 
         game.outcomes.forEach((outcome) => {
             // Sun 2 active
-            if (game.weather == 1) {
+            if (outcome.includes("Sun 2")) {
                 // Sun 2 acted on Away team
                 if (outcome.endsWith(game.awayTeamNickname)) {
                     // Away team Won game
@@ -106,7 +106,7 @@ function App() {
                 }
             }
             // Black Hole active
-            else if (game.weather == 14) {
+            else if (outcome.includes("Black Hole")) {
                 // Black Hole acted on Away team
                 if (outcome.endsWith(game.awayTeamNickname + "!")) {
                     // Away team Won game
